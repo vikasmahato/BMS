@@ -28,11 +28,11 @@ public class Auditorium {
 
     @OneToMany(
             mappedBy = "auditorium",
-            cascade = CascadeType.ALL,
+            cascade = CascadeType.PERSIST,
             fetch = FetchType.EAGER,
             orphanRemoval = true
     )
-    @Size(min = 2, max = 6)
+    @Size(min = 2, max = 150)
     @Fetch(FetchMode.SELECT)
     @BatchSize(size = 30)
     private List<Seat> seats = new ArrayList<>();

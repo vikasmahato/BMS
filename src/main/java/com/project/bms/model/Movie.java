@@ -1,5 +1,7 @@
 package com.project.bms.model;
 
+import com.project.bms.model.audit.UserDateAudit;
+import com.project.bms.payload.MovieRequest;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -13,7 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "movies")
-public class Movie {
+public class Movie extends UserDateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,8 +36,13 @@ public class Movie {
     @Size(max = 100)
     private String description;
 
+    @NotBlank
+    private String imdbId;
+
     @NotNull
     private Integer duration;
+
+    private String thumbUrl;
 
     @OneToMany(
             mappedBy = "movie",
@@ -43,12 +50,32 @@ public class Movie {
             fetch = FetchType.EAGER,
             orphanRemoval = true
     )
-    @Size(min = 2, max = 6)
+    @Size(min = 0)
     @Fetch(FetchMode.SELECT)
     @BatchSize(size = 30)
     private List<Screening> screenings = new ArrayList<>();
 
     public Movie() {
+    }
+
+    public Movie(MovieRequest movieRequest) {
+        this.title = movieRequest.getTitle();
+        this.director = movieRequest.getDirector();
+        this.cast = movieRequest.getCast();
+        this.description = movieRequest.getDescription();
+        this.duration = movieRequest.getDuration();
+        this.thumbUrl = movieRequest.getThumbUrl();
+        this.imdbId = movieRequest.getImdbId();
+    }
+
+    public Movie(MovieBuilder movieBuilder) {
+        this.title = movieBuilder.title;
+        this.director = movieBuilder.director;
+        this.cast = movieBuilder.cast;
+        this.description = movieBuilder.description;
+        this.duration = movieBuilder.duration;
+        this.thumbUrl = movieBuilder.thumbUrl;
+        this.imdbId = movieBuilder.imdbId;
     }
 
     public Long getId() {
@@ -105,5 +132,70 @@ public class Movie {
 
     public void setScreenings(List<Screening> screenings) {
         this.screenings = screenings;
+    }
+
+    public String getThumbUrl() {
+        return thumbUrl;
+    }
+
+    public void setThumbUrl(String thumbUrl) {
+        this.thumbUrl = thumbUrl;
+    }
+
+    public String getImdbId() {
+        return imdbId;
+    }
+
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
+    }
+
+    public static class MovieBuilder {
+        private String title;
+        private String director;
+        private String cast;
+        private String description;
+        private Integer duration;
+        private String thumbUrl;
+        private String imdbId;
+
+        public MovieBuilder setTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public MovieBuilder setDirector(String director) {
+            this.director = director;
+            return this;
+        }
+
+        public MovieBuilder setCast(String cast) {
+            this.cast = cast;
+            return this;
+        }
+
+        public MovieBuilder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public MovieBuilder setDuration(Integer duration) {
+            this.duration = duration;
+            return this;
+        }
+
+        public MovieBuilder setThumbUrl(String thumbUrl) {
+            this.thumbUrl = thumbUrl;
+            return this;
+        }
+
+        public MovieBuilder setImdbId(String imdbId) {
+            this.imdbId = imdbId;
+            return this;
+        }
+
+        public Movie build() {
+            return new Movie(this);
+        }
     }
 }

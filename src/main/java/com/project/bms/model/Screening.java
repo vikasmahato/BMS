@@ -19,6 +19,8 @@ public class Screening {
     @JoinColumn(name = "auditorium_id", nullable = false)
     private Auditorium auditorium;
 
+    //private Theater theater;
+
     @NotNull
     private Date screeningStartTime;
 
@@ -47,6 +49,7 @@ public class Screening {
 
     public void setAuditorium(Auditorium auditorium) {
         this.auditorium = auditorium;
+       // this.theater = auditorium.getTheater();
     }
 
     public Date getScreeningStartTime() {

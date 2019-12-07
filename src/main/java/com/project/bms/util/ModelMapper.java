@@ -1,9 +1,11 @@
 package com.project.bms.util;
 
 import com.project.bms.model.Poll;
+import com.project.bms.model.Theater;
 import com.project.bms.model.User;
 import com.project.bms.payload.ChoiceResponse;
 import com.project.bms.payload.PollResponse;
+import com.project.bms.payload.TheaterResponse;
 import com.project.bms.payload.UserSummary;
 
 import java.time.Instant;
@@ -48,4 +50,5 @@ public class ModelMapper {
 
         return pollResponse;
     }
+
 }

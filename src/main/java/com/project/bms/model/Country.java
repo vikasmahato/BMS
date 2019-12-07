@@ -32,12 +32,16 @@ public class Country {
             fetch = FetchType.EAGER,
             orphanRemoval = true
     )
-    @Size(min = 2, max = 6)
+    @Size(min = 0)
     @Fetch(FetchMode.SELECT)
     @BatchSize(size = 30)
     private List<City> cities = new ArrayList<>();
 
     public Country() {}
+
+    public Country(@NotBlank @Size(max = 100) String name) {
+        this.name = name;
+    }
 
     public Long getId() {
         return id;

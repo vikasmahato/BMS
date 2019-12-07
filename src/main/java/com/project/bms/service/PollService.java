@@ -11,8 +11,8 @@ import com.project.bms.repository.PollRepository;
 import com.project.bms.repository.UserRepository;
 import com.project.bms.repository.VoteRepository;
 import com.project.bms.security.UserPrincipal;
-import com.project.bms.util.AppConstants;
 import com.project.bms.util.ModelMapper;
+import com.project.bms.util.ValidatorUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ public class PollService {
     private static final Logger logger = LoggerFactory.getLogger(PollService.class);
 
     public PagedResponse<PollResponse> getAllPolls(UserPrincipal currentUser, int page, int size) {
-        validatePageNumberAndSize(page, size);
+        ValidatorUtils.validatePageNumberAndSize(page, size);
 
         // Retrieve Polls
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
@@ -74,7 +74,7 @@ public class PollService {
     }
 
     public PagedResponse<PollResponse> getPollsCreatedBy(String username, UserPrincipal currentUser, int page, int size) {
-        validatePageNumberAndSize(page, size);
+        ValidatorUtils.validatePageNumberAndSize(page, size);
 
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
@@ -105,7 +105,7 @@ public class PollService {
     }
 
     public PagedResponse<PollResponse> getPollsVotedBy(String username, UserPrincipal currentUser, int page, int size) {
-        validatePageNumberAndSize(page, size);
+        ValidatorUtils.validatePageNumberAndSize(page, size);
 
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
@@ -225,16 +225,6 @@ public class PollService {
         return ModelMapper.mapPollToPollResponse(poll, choiceVotesMap, creator, vote.getChoice().getId());
     }
 
-
-    private void validatePageNumberAndSize(int page, int size) {
-        if(page < 0) {
-            throw new BadRequestException("Page number cannot be less than zero.");
-        }
-
-        if(size > AppConstants.MAX_PAGE_SIZE) {
-            throw new BadRequestException("Page size must not be greater than " + AppConstants.MAX_PAGE_SIZE);
-        }
-    }
 
     private Map<Long, Long> getChoiceVoteCountMap(List<Long> pollIds) {
         // Retrieve Vote Counts of every Choice belonging to the given pollIds

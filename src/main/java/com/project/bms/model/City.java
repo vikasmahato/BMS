@@ -9,7 +9,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "cities")
@@ -32,12 +31,17 @@ public class City {
             fetch = FetchType.EAGER,
             orphanRemoval = true
     )
-    @Size(min = 2, max = 6)
+
     @Fetch(FetchMode.SELECT)
     @BatchSize(size = 30)
     private List<Theater> theaters = new ArrayList<>();
 
     public City() {
+    }
+
+    public City(@NotBlank @Size(max = 100) String name, Country country) {
+        this.name = name;
+        this.country = country;
     }
 
     public Long getId() {

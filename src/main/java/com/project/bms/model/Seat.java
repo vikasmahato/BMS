@@ -23,6 +23,12 @@ public class Seat {
     public Seat() {
     }
 
+    public Seat(Auditorium auditorium, int rowNo, int colNo) {
+        this.auditorium = auditorium;
+        this.rowNo = rowNo;
+        this.coulmnNo = colNo;
+    }
+
     public Long getId() {
         return id;
     }
