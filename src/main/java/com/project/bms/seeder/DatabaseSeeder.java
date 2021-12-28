@@ -62,7 +62,7 @@ public class DatabaseSeeder {
     @EventListener
     public void seed(ContextRefreshedEvent event) {
 
-/*        seedRolesTable();
+        seedRolesTable();
         seedUsersTable();
         seedCountriesTable();
         seedCitiesTable();
@@ -70,7 +70,7 @@ public class DatabaseSeeder {
         seedTheaterRepository();
         seedAuditoriumTable();
         seedMoviesTable();
-        seedScreeningTable();*/
+        seedScreeningTable();
         //seedScreeningTable();
     }
 
@@ -143,7 +143,14 @@ public class DatabaseSeeder {
     private void seedMoviesTable() {
         movieRepository.deleteAll();
 
-        for(int i = 1; i<=27; i++) {
+        movieRepository.save(new Movie("Tadap", "Milan Luthria", "cast", "description", "tt10761694", 126, ""));
+        movieRepository.save(new Movie("Antim: The Final Truth", "Milan Luthria", "cast", "description", "tt13491110", 126, ""));
+        movieRepository.save(new Movie("Resident Evil: Welcome To Raccoon City", "Johannes Roberts", "cast", "description", "tt6920084", 126, ""));
+        movieRepository.save(new Movie("Sooryavanshi", "Milan Luthria", "cast", "description", "tt9531772", 126, ""));
+        movieRepository.save(new Movie("Satyameva Jayate 2", "Milan Luthria", "cast", "description", "tt10739666", 126, ""));
+        movieRepository.save(new Movie("Teeja Punjab", "Milan Luthria", "cast", "description", "tt14203864", 126, ""));
+
+       /* for(int i = 1; i<=27; i++) {
             movieRepository.save(new Movie.MovieBuilder()
                     .setTitle(StringUtils.getRandomString(20))
                     .setDuration(new Random().nextInt(200))
@@ -153,7 +160,7 @@ public class DatabaseSeeder {
                     .setThumbUrl("http://localhost:3000/thumbnails/"+i+".jpg")
                     .setImdbId("tt4154796")
                     .build());
-        }
+        }*/
 
         logger.info("Movie table seeded");
     }

@@ -58,6 +58,16 @@ public class Movie extends UserDateAudit {
     public Movie() {
     }
 
+    public Movie(@NotBlank @Size(max = 100) String title, @NotBlank @Size(max = 50) String director, @NotBlank @Size(max = 500) String cast, @NotBlank @Size(max = 100) String description, @NotBlank String imdbId, @NotNull Integer duration, String thumbUrl) {
+        this.title = title;
+        this.director = director;
+        this.cast = cast;
+        this.description = description;
+        this.imdbId = imdbId;
+        this.duration = duration;
+        this.thumbUrl = thumbUrl;
+    }
+
     public Movie(MovieRequest movieRequest) {
         this.title = movieRequest.getTitle();
         this.director = movieRequest.getDirector();
